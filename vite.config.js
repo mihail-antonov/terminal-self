@@ -11,10 +11,10 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-gsap':   ['gsap'],
-          'vendor-lenis':  ['lenis'],
-          'vendor-preact': ['preact', 'preact/hooks'],
+        manualChunks(id) {
+          if (id.includes('gsap'))   return 'vendor-gsap'
+          if (id.includes('lenis'))  return 'vendor-lenis'
+          if (id.includes('preact')) return 'vendor-preact'
         },
       },
     },
