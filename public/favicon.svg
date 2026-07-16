@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!--
+    Octahedron projected at rotateX(25deg) rotateY(30deg)
+    Vertices:
+      T  = (50, 16)  — top
+      B  = (50, 84)  — bottom
+      Eq1= (87, 54)  — yA= 45° (right-front)
+      Eq2= (40, 66)  — yA=-45° (left-front, closest to viewer)
+      Eq3= (60, 35)  — yA=135° (right-back)
+      Eq4= (13, 46)  — yA=-135° (left-back)
+  -->
+
+  <!-- Front face fills -->
+  <polygon points="50,16 87,54 40,66" fill="rgba(255,107,0,0.11)"/>
+  <polygon points="50,16 40,66 13,46" fill="rgba(255,107,0,0.07)"/>
+  <polygon points="50,84 40,66 87,54" fill="rgba(255,107,0,0.14)"/>
+  <polygon points="50,84 13,46 40,66" fill="rgba(255,107,0,0.06)"/>
+
+  <!-- Hidden edges (back) -->
+  <line x1="50" y1="16" x2="60" y2="35" stroke="rgba(255,107,0,0.28)" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="50" y1="84" x2="60" y2="35" stroke="rgba(255,107,0,0.28)" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="13" y1="46" x2="60" y2="35" stroke="rgba(255,107,0,0.28)" stroke-width="1.2" stroke-linecap="round"/>
+  <line x1="60" y1="35" x2="87" y2="54" stroke="rgba(255,107,0,0.28)" stroke-width="1.2" stroke-linecap="round"/>
+
+  <!-- Visible edges (front) -->
+  <line x1="50" y1="16" x2="87" y2="54" stroke="#ff6b00" stroke-width="2" stroke-linecap="round"/>
+  <line x1="50" y1="16" x2="40" y2="66" stroke="#ff6b00" stroke-width="2" stroke-linecap="round"/>
+  <line x1="50" y1="16" x2="13" y2="46" stroke="#ff6b00" stroke-width="2" stroke-linecap="round"/>
+  <line x1="50" y1="84" x2="87" y2="54" stroke="#ff6b00" stroke-width="2" stroke-linecap="round"/>
+  <line x1="50" y1="84" x2="40" y2="66" stroke="#ff6b00" stroke-width="2" stroke-linecap="round"/>
+  <line x1="50" y1="84" x2="13" y2="46" stroke="#ff6b00" stroke-width="2" stroke-linecap="round"/>
+  <line x1="87" y1="54" x2="40" y2="66" stroke="#ff6b00" stroke-width="2" stroke-linecap="round"/>
+  <line x1="40" y1="66" x2="13" y2="46" stroke="#ff6b00" stroke-width="2" stroke-linecap="round"/>
+</svg>
