@@ -197,9 +197,9 @@ export function About() {
 
           {/* Bio */}
           <div ref={bioRef} className="flex flex-col md:-mt-10">
-            <h3 className="text-2xl text-zinc-300 font-semibold tracking-tight mb-6">
+            <h2 className="text-2xl text-zinc-300 font-semibold tracking-tight mb-6">
               <span className="text-green">01_</span> About
-            </h3>
+            </h2>
 
             <p className="text-[#898992] text-sm leading-relaxed mb-8">
               6 years building interfaces people actually use.

@@ -417,6 +417,7 @@ export function Contact() {
                   <input
                     ref={inputRef}
                     type="text"
+                    aria-label="Terminal command input"
                     value={input}
                     onInput={e => setInput(e.currentTarget.value)}
                     onKeyDown={handleKeyDown}

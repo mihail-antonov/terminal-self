@@ -22,7 +22,7 @@ function ProjectCard({ name, description, tech, repository, website }) {
     <li className="list-none rounded-xl border border-zinc-800/80 bg-[#111113] shadow-[0_0_60px_rgba(255,107,0,0.07)] will-change-transform">
       <div className="h-full flex flex-col p-5">
         {/* Title */}
-        <h3 className="text-zinc-300 font-semibold text-xl tracking-tight mb-3">{name}</h3>
+        <h4 className="text-zinc-300 font-semibold text-xl tracking-tight mb-3">{name}</h4>
 
         {/* Description */}
         <p className="text-sm leading-relaxed flex-1 text-[#898992]">{description}</p>
