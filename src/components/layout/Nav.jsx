@@ -29,7 +29,7 @@ export function Nav() {
       <div className="max-w-7xl mx-auto px-5 flex items-center justify-between h-16">
         <a
           href="#hero"
-          className="text-[12px] tracking-widest text-white no-underline hover:text-white transition-colors duration-200"
+          className="text-[12px] tracking-widest text-zinc-300 no-underline hover:text-zinc-300 transition-colors duration-200"
         >
           mihail@portfolio: <span className="text-green">~</span>
         </a>
@@ -40,7 +40,7 @@ export function Nav() {
             <a
               key={href}
               href={href}
-              className="text-[11px] tracking-widest uppercase text-zinc-500 no-underline hover:text-white transition-colors duration-200"
+              className="text-[11px] tracking-widest uppercase text-[#898992] no-underline hover:text-zinc-300 transition-colors duration-200"
             >
               <span className="text-green">{String(i + 1).padStart(2, '0')}.</span>{' '}
               {label}
@@ -65,7 +65,7 @@ export function Nav() {
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden text-zinc-500"
+          className="md:hidden text-[#898992]"
           onClick={() => setOpen(v => !v)}
           aria-label="Toggle menu"
         >
@@ -82,7 +82,7 @@ export function Nav() {
             <a
               key={href}
               href={href}
-              className="text-[12px] tracking-widest uppercase text-zinc-500 no-underline hover:text-white transition-colors duration-200"
+              className="text-[12px] tracking-widest uppercase text-[#898992] no-underline hover:text-zinc-300 transition-colors duration-200"
               onClick={() => setOpen(false)}
             >
               <span className="text-green">{String(i + 1).padStart(2, '0')}.</span>{' '}

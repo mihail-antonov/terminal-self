@@ -3,6 +3,7 @@ import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { useScrollAnimation } from '../../hooks/useScrollAnimation'
 import { DecoCube } from '../ui/DecoCube'
+import { LuCloudDownload } from 'react-icons/lu'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -46,8 +47,8 @@ export function About() {
         stagger: 0.08,
         scrollTrigger: {
           trigger: terminalBodyRef.current,
-          start: 'top 85%',
-          end: 'center center',
+          start: 'top 75%',
+          end: 'center center+=5%',
           scrub: 1,
         },
       })
@@ -134,7 +135,7 @@ export function About() {
                 {DOTS.map((c, i) => (
                   <span key={i} className="w-3 h-3 rounded-full shrink-0" style={{ background: c }} />
                 ))}
-                <span className="text-[12px] ml-3 text-zinc-500">
+                <span className="text-[12px] ml-3 text-[#898992]">
                   <span className="text-green">mihail</span>@portfolio: ~/
                   <span className="text-zinc-300">01-about</span>
                 </span>
@@ -145,35 +146,34 @@ export function About() {
                 {terminalLines.map((line, i) => {
                   if (line.prompt) {
                     return (
-                      <div key={i} className="term-line flex items-center gap-2 mb-1">
-                        <span className="text-zinc-500 select-none">
+                      <div key={i} className="term-line flex flex-wrap items-center gap-2 mb-1">
+                        <span className="text-[#898992] select-none">
                           <span className="text-green">mihail</span>@portfolio:~$
                         </span>
-                        <span className="text-zinc-200">{line.text}</span>
+                        <span className="text-zinc-200 whitespace-break-spaces">{line.text}</span>
                       </div>
                     )
                   }
                   if (line.highlight) {
                     return (
                       <div key={i} className="term-line whitespace-pre">
-                        <span className="text-zinc-500">{'    status:   '}</span>
-                        <span className="text-zinc-500 font-semibold"> "NOT AVAILABLE"</span>
-                        <span className="text-zinc-500">,</span>
+                        <span className="text-[#898992]">{'    status:   '}</span>
+                        <span className="text-[#898992] font-semibold"> "NOT AVAILABLE"</span>
+                        <span className="text-[#898992]">,</span>
                       </div>
                     )
                   }
                   if (line.key) {
                     return (
-                      <div key={i} className="term-line whitespace-pre">
-                        <span className="text-zinc-500">{'    '}{line.key}:{' '.repeat(Math.max(1, 10 - line.key.length))}</span>
-                        <span className="text-fg">{line.val}</span>
+                      <div key={i} className="term-line wrap-break-word" style={{ paddingLeft: '15ch', textIndent: '-15ch' }}>
+                        <span className="text-[#898992] whitespace-pre">{'    '}{line.key}:{' '.repeat(Math.max(1, 10 - line.key.length))}</span><span className="text-fg">{line.val}</span>
                       </div>
                     )
                   }
                   return (
                     <div
                       key={i}
-                      className={`term-line whitespace-pre min-h-[1.9em] ${line.dim ? 'text-zinc-500/55' : 'text-zinc-500'}`}
+                      className={`term-line whitespace-pre min-h-[1.9em] ${line.dim ? 'text-[#898992]/55' : 'text-[#898992]'}`}
                     >
                       {line.text || ' '}
                     </div>
@@ -182,7 +182,7 @@ export function About() {
 
                 {/* Blinking cursor */}
                 <div className="term-line flex items-center gap-2 mt-1">
-                  <span className="text-zinc-500 select-none">
+                  <span className="text-[#898992] select-none">
                     <span className="text-green">mihail</span>@portfolio:~$
                   </span>
                   <span
@@ -196,20 +196,20 @@ export function About() {
           </div>
 
           {/* Bio */}
-          <div ref={bioRef} className="flex flex-col">
-            <h3 className="text-2xl text-white font-semibold tracking-tight mb-6">
+          <div ref={bioRef} className="flex flex-col md:-mt-10">
+            <h3 className="text-2xl text-zinc-300 font-semibold tracking-tight mb-6">
               <span className="text-green">01_</span> About
             </h3>
 
-            <p className="text-zinc-500 text-sm leading-relaxed mb-8">
+            <p className="text-[#898992] text-sm leading-relaxed mb-8">
               6 years building interfaces people actually use.
             </p>
 
-            <p className="text-sm leading-[2.1] mb-5 text-zinc-500">
-              I specialise in <span className="text-green">React</span>, <span className="text-green">Next.js</span>, and <span className="text-green">Shopify</span> — from custom storefronts with Liquid and SCSS to full product UIs with <span className="text-white font-medium">TailwindCSS</span> and <span className="text-white font-medium">Node</span>. I care about the details: the kind of work where design and engineering meet.
+            <p className="text-sm leading-[2.1] mb-5 text-[#898992]">
+              I specialise in <span className="text-green">React</span>, <span className="text-green">Next.js</span>, and <span className="text-green">Shopify</span> — from custom storefronts with Liquid and SCSS to full product UIs with <span className="text-zinc-300 font-medium">TailwindCSS</span> and <span className="text-zinc-300 font-medium">Node</span>. I care about the details: the kind of work where design and engineering meet.
             </p>
-            <p className="text-sm leading-[2.1] mb-10 text-zinc-500">
-              I also work with the <span className="text-white font-medium">Threedium SDK</span> to bring 3D model configurators to life in the browser. Currently <span className="text-white font-medium">not available</span> for new roles — but always up for a good conversation.
+            <p className="text-sm leading-[2.1] mb-10 text-[#898992]">
+              I also work with the <span className="text-zinc-300 font-medium">Threedium SDK</span> to bring 3D model configurators to life in the browser. Currently <span className="text-zinc-300 font-medium">not available</span> for new roles — but always up for a good conversation.
             </p>
 
             <a
@@ -217,7 +217,7 @@ export function About() {
               download
               className="self-start inline-flex items-center justify-between gap-2 text-[12px] tracking-widest uppercase no-underline min-w-60 ps-6 pe-5 py-4 border border-green/30 bg-green/4 text-green font-semibold transition-all duration-200 hover:bg-green/8"
             >
-              <span>Download CV</span> <i className="bi bi-download text-[14px]" />
+              <span>Download CV</span> <LuCloudDownload className="text-[16px]" />
             </a>
           </div>
         </div>

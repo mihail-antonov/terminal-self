@@ -32,7 +32,7 @@ export function Education() {
         </p>
         <h2
           ref={headingRef}
-          className="text-white font-semibold tracking-tight mb-16"
+          className="text-zinc-300 font-semibold tracking-tight mb-16"
           style={{ fontSize: 'clamp(28px, 4vw, 52px)' }}
         >
           Background
@@ -50,12 +50,12 @@ export function Education() {
                 style={{ borderColor: 'rgba(255,255,255,0.07)' }}
               >
                 <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 mb-3">
-                  <h3 className="text-white font-semibold text-lg">{institution}</h3>
-                  <span className="text-zinc-500 text-[13px]">/</span>
-                  <span className="text-zinc-500 text-[13px]">{credential}</span>
-                  <span className="text-[12px] text-zinc-500 ml-auto">{from} → {to}</span>
+                  <h3 className="text-zinc-300 font-semibold text-lg">{institution}</h3>
+                  <span className="text-[#898992] text-[13px]">/</span>
+                  <span className="text-[#898992] text-[13px]">{credential}</span>
+                  <span className="text-[12px] text-[#898992] ml-auto">{from} → {to}</span>
                 </div>
-                <p className="text-sm text-zinc-500 leading-relaxed max-w-[540px]">{note}</p>
+                <p className="text-sm text-[#898992] leading-relaxed max-w-[540px]">{note}</p>
               </div>
             )
           })}

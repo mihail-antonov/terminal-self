@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'preact/hooks'
 import { useScrollAnimation } from '../../hooks/useScrollAnimation'
-import { usePB } from '../../hooks/usePB'
+import { usePortfolio } from '../../utils/PortfolioContext'
+import pkg from '../../../package.json'
+import { DynIcon } from '../ui/DynIcon'
 
 const DEV_JOKES = [
   ['Q: Why do developers prefer dark mode?', 'A: Because light attracts bugs.'],
@@ -23,12 +25,12 @@ const RESPONSES = {
     '',
     '  contact          —  show contact info',
     '  github           —  show GitHub link',
-    '  open github      —  open GitHub in browser',
     '  linkedin         —  show LinkedIn link',
-    '  open linkedin    —  open LinkedIn in browser',
     '  email            —  show email address',
-    '  send mail        —  open mail client',
     '  hire             —  make me an offer',
+    '  projects         —  list all projects',
+    '  experience       —  list work experience',
+    '  about            —  who is this guy?',
     '  joke             —  get a developer joke',
     '  ping             —  check if I\'m online',
     '  whoami           —  discover your true identity',
@@ -106,9 +108,9 @@ function HireCard() {
         '  Status: READY TO TALK',
         '',
       ].map((line, i) => (
-        <div key={i} className="text-zinc-500 min-h-[1.9em]">{line || ' '}</div>
+        <div key={i} className="text-[#898992] min-h-[1.9em]">{line || ' '}</div>
       ))}
-      <div className="text-zinc-500">
+      <div className="text-[#898992]">
         {'  Drop me a line: '}
         <a
           href="mailto:hello@mihail-antonov.dev"
@@ -118,7 +120,7 @@ function HireCard() {
           hello@mihail-antonov.dev
         </a>
       </div>
-      <div className="text-zinc-500 min-h-[1.9em]">{'  Response time: < 24h (coffee permitting)'}</div>
+      <div className="text-[#898992] min-h-[1.9em]">{'  Response time: < 24h (coffee permitting)'}</div>
       <div className="min-h-[1.9em]" />
     </div>
   )
@@ -127,7 +129,7 @@ function HireCard() {
 function Prompt({ cmd }) {
   return (
     <div className="flex items-center gap-2 flex-wrap">
-      <span className="text-zinc-500 select-none whitespace-nowrap">
+      <span className="text-[#898992] select-none whitespace-nowrap">
         <span className="text-green">mihail</span>@portfolio:~$
       </span>
       <span className="text-fg">{cmd}</span>
@@ -138,25 +140,26 @@ function Prompt({ cmd }) {
 function ContactCard({ links }) {
   return (
     <div className="mt-[0.3em] mb-[0.3em]">
-      <div className="text-zinc-500 mb-[0.8em]">
+      <div className="text-[#898992] mb-[0.8em]">
         {"  Let's build something great together."}
       </div>
       {links.map(({ icon, name, website }) => {
-        const external = !website.startsWith('mailto:')
+        const href = website.includes('@') && !website.startsWith('mailto:') ? `mailto:${website}` : website
+        const external = !href.startsWith('mailto:')
         return (
           <div key={name} className="flex items-center gap-3 mb-1">
-            <span className="text-[#4a5568] min-w-3 flex items-center gap-1.5">
+            <span className="text-[#898992] min-w-3 flex items-center gap-1.5">
               {'  '}
-              {icon && <i className={`bi ${icon}`} />}
+              {icon && <DynIcon name={icon} />}
             </span>
             <a
-              href={website}
+              href={href}
               target={external ? '_blank' : '_self'}
               rel={external ? 'noopener noreferrer' : undefined}
               onClick={e => e.stopPropagation()}
               className="text-green no-underline border-b border-green/30 transition-[border-color] duration-150 hover:border-green"
             >
-              {linkText(website)}
+              {linkText(href)}
             </a>
           </div>
         )
@@ -167,16 +170,17 @@ function ContactCard({ links }) {
 
 export function Contact() {
 
-  const { data: contactLinks } = usePB('contacts')
+  const { contacts: contactLinks, experience, projects } = usePortfolio()
 
   const [history, setHistory]       = useState(INITIAL_HISTORY)
   const [input, setInput]           = useState('')
   const [cmdHistory, setCmdHistory] = useState([])
   const [histIdx, setHistIdx]       = useState(-1)
 
-  const terminalRef = useRef()
-  const inputRef    = useRef()
-  const sectionRef  = useRef()
+  const terminalRef     = useRef()
+  const terminalCardRef = useRef()
+  const inputRef        = useRef()
+  const sectionRef      = useRef()
 
   useScrollAnimation(sectionRef, { y: 0, duration: 0.7 })
 
@@ -187,6 +191,12 @@ export function Contact() {
   }, [history])
 
   const focusInput = () => inputRef.current?.focus({ preventScroll: true })
+
+  const handleInputFocus = useCallback(() => {
+    setTimeout(() => {
+      terminalCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    }, 350)
+  }, [])
 
   const run = useCallback((raw) => {
     const cmd = raw.trim().toLowerCase()
@@ -211,33 +221,54 @@ export function Contact() {
         ? { type: 'link', name: 'Github', href: gh.website, label: linkText(gh.website) }
         : { type: 'output', lines: ['', '  github: link not found.', ''] }
       )
-    } else if (cmd === 'open github') {
-      const gh = contactLinks?.find(l => l.name?.toLowerCase() === 'github')
-      if (gh) {
-        newEntries.push({ type: 'output', lines: ['', '  Opening GitHub...', `  ${linkText(gh.website)}`, ''] })
-        window.open(gh.website, '_blank')
-      } else {
-        newEntries.push({ type: 'output', lines: ['', '  github: link not found.', ''] })
-      }
     } else if (cmd === 'linkedin') {
       const li = contactLinks?.find(l => l.name?.toLowerCase() === 'linkedin')
       newEntries.push(li
         ? { type: 'link', name: 'LinkedIn', href: li.website, label: linkText(li.website) }
         : { type: 'output', lines: ['', '  linkedin: link not found.', ''] }
       )
-    } else if (cmd === 'open linkedin') {
-      const li = contactLinks?.find(l => l.name?.toLowerCase() === 'linkedin')
-      if (li) {
-        newEntries.push({ type: 'output', lines: ['', '  Opening LinkedIn...', `  ${linkText(li.website)}`, ''] })
-        window.open(li.website, '_blank')
-      } else {
-        newEntries.push({ type: 'output', lines: ['', '  linkedin: link not found.', ''] })
-      }
     } else if (cmd === 'email' || cmd === 'mail') {
       newEntries.push({ type: 'link', name: 'Email', href: 'mailto:hello@mihail-antonov.dev', label: 'hello@mihail-antonov.dev' })
-    } else if (cmd === 'send mail' || cmd === 'send email') {
-      newEntries.push({ type: 'output', lines: ['', '  Opening mail client...', '  hello@mihail-antonov.dev', ''] })
-      window.location.href = 'mailto:hello@mihail-antonov.dev'
+    } else if (cmd === 'projects') {
+      if (!projects?.length) {
+        newEntries.push({ type: 'output', lines: ['', '  No projects found.', ''] })
+      } else {
+        const lines = ['']
+        projects.forEach((p, i) => {
+          lines.push(`  ${String(i + 1).padStart(2, '0')}.  ${p.name}`)
+          if (p.description) lines.push(`       ${p.description.slice(0, 60)}${p.description.length > 60 ? '…' : ''}`)
+          lines.push('')
+        })
+        newEntries.push({ type: 'output', lines })
+      }
+    } else if (cmd === 'experience') {
+      if (!experience?.length) {
+        newEntries.push({ type: 'output', lines: ['', '  No experience found.', ''] })
+      } else {
+        const lines = ['']
+        experience.forEach((j) => {
+          lines.push(`  ${j.name}`)
+          lines.push(`  ${j.from} — ${j.to}`)
+          lines.push('')
+        })
+        newEntries.push({ type: 'output', lines })
+      }
+    } else if (cmd === 'about') {
+      newEntries.push({ type: 'output', lines: [
+        '',
+        '  Mihail Antonov — Frontend Developer',
+        '',
+        '  6 years building interfaces people actually use.',
+        '  React, Next.js, Shopify — from storefronts to',
+        '  full product UIs. Also 3D configurators via',
+        '  the Threedium SDK.',
+        '',
+        '  Not available for new roles right now,',
+        '  but always up for a good conversation.',
+        '',
+        '  Type "hire" to make an offer.',
+        '',
+      ]})
     } else if (cmd === 'joke') {
       const j = DEV_JOKES[Math.floor(Math.random() * DEV_JOKES.length)]
       newEntries.push({ type: 'output', lines: ['', ...j.map(l => `  ${l}`), ''] })
@@ -260,7 +291,7 @@ export function Contact() {
     setHistory(prev => [...prev, ...newEntries])
     setCmdHistory(prev => [cmd, ...prev])
     setHistIdx(-1)
-  }, [contactLinks])
+  }, [contactLinks, projects, experience])
 
   const handleSubmit = useCallback((e) => {
     e.preventDefault()
@@ -290,11 +321,11 @@ export function Contact() {
     <section id="contact" ref={sectionRef} className="flex flex-col items-center justify-center py-20 md:py-40 overflow-hidden min-h-svh">
       <div className="max-w-3xl mx-auto px-5 w-full">
 
-        <h3 className="text-2xl text-white font-semibold tracking-tight mb-6">
+        <h3 className="text-2xl text-zinc-300 font-semibold tracking-tight mb-6">
           <span className="text-green">04_</span> Contact
         </h3>
 
-        <p className="text-zinc-500 text-sm leading-relaxed max-w-105 mb-8 md:mb-16">
+        <p className="text-[#898992] text-sm leading-relaxed max-w-105 mb-8 md:mb-16">
           Not available right now, but always up for a good conversation. Drop a line — I read everything.
         </p>
 
@@ -306,6 +337,7 @@ export function Contact() {
 
           {/* Terminal */}
           <div
+            ref={terminalCardRef}
             className="relative z-1 rounded-xl overflow-hidden cursor-text border border-zinc-800/75 shadow-[0_0_60px_rgba(255,107,0,0.07)] bg-[#111113]"
             onClick={focusInput}
           >
@@ -314,9 +346,10 @@ export function Contact() {
               <span className="w-3 h-3 rounded-full shrink-0 bg-[#3f3f46]" />
               <span className="w-3 h-3 rounded-full shrink-0 bg-[#3f3f46]" />
               <span className="w-3 h-3 rounded-full shrink-0 bg-green" />
-              <span className="text-[12px] ml-3 text-zinc-500">
+              <span className="text-[12px] ml-3 text-[#898992]">
                 <span className="text-green">mihail</span>@portfolio: ~
               </span>
+              <span className="text-[11px] text-[#898992]/40 ml-auto tracking-widest">v{pkg.version}</span>
             </div>
 
             {/* Body */}
@@ -340,7 +373,7 @@ export function Contact() {
                   return (
                     <div key={i}>
                       <div className="min-h-[1.9em]" />
-                      <div className="text-zinc-500">
+                      <div className="text-[#898992]">
                         {'  '}{entry.name}:{' '}
                         <a
                           href={entry.href}
@@ -360,7 +393,7 @@ export function Contact() {
                   return (
                     <div key={i}>
                       {entry.lines.map((line, j) => (
-                        <div key={j} className="text-zinc-500 min-h-[1.9em]">
+                        <div key={j} className="text-[#898992] min-h-[1.9em]">
                           {line || ' '}
                         </div>
                       ))}
@@ -372,7 +405,7 @@ export function Contact() {
 
               {/* Active input */}
               <form onSubmit={handleSubmit} className="flex items-center gap-2 mt-auto flex-wrap">
-                <span className="text-zinc-500 select-none whitespace-nowrap">
+                <span className="text-[#898992] select-none whitespace-nowrap">
                   <span className="text-green">mihail</span>@portfolio:~$
                 </span>
                 <div className="relative flex-1 min-w-0 flex items-center">
@@ -387,6 +420,7 @@ export function Contact() {
                     value={input}
                     onInput={e => setInput(e.currentTarget.value)}
                     onKeyDown={handleKeyDown}
+                    onFocus={handleInputFocus}
                     autoComplete="off"
                     autoCorrect="off"
                     className="absolute inset-0 opacity-0 w-full bg-transparent border-none outline-none font-[inherit]"

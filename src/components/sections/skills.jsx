@@ -44,7 +44,7 @@ export function Skills() {
         </p>
         <h2
           ref={headingRef}
-          className="text-white font-semibold tracking-tight mb-16"
+          className="text-zinc-300 font-semibold tracking-tight mb-16"
           style={{ fontSize: 'clamp(28px, 4vw, 52px)' }}
         >
           What I work with
@@ -65,7 +65,7 @@ export function Skills() {
               </p>
               <ul className="flex flex-col gap-2 p-0">
                 {items.map(item => (
-                  <li key={item} className="list-none flex items-center gap-2 text-[13px] text-zinc-500">
+                  <li key={item} className="list-none flex items-center gap-2 text-[13px] text-[#898992]">
                     <span style={{ color: 'rgba(255,107,0,0.5)' }}>›</span>
                     {item}
                   </li>

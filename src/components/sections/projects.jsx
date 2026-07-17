@@ -1,8 +1,10 @@
 import { useRef, useEffect } from 'preact/hooks'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
-import { usePB, parseTech } from '../../hooks/usePB'
+import { parseTech } from '../../hooks/usePB'
+import { usePortfolio } from '../../utils/PortfolioContext'
 import { DecoCube } from '../ui/DecoCube'
+import {LuArrowUpRight, LuGithub} from 'react-icons/lu'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -20,10 +22,10 @@ function ProjectCard({ name, description, tech, repository, website }) {
     <li className="list-none rounded-xl border border-zinc-800/80 bg-[#111113] shadow-[0_0_60px_rgba(255,107,0,0.07)] will-change-transform">
       <div className="h-full flex flex-col p-5">
         {/* Title */}
-        <h3 className="text-white font-semibold text-xl tracking-tight mb-3">{name}</h3>
+        <h3 className="text-zinc-300 font-semibold text-xl tracking-tight mb-3">{name}</h3>
 
         {/* Description */}
-        <p className="text-sm leading-relaxed flex-1 text-zinc-500">{description}</p>
+        <p className="text-sm leading-relaxed flex-1 text-[#898992]">{description}</p>
 
         {/* Divider */}
         <div className="my-5 border-t border-zinc-800/80" />
@@ -54,7 +56,7 @@ function ProjectCard({ name, description, tech, repository, website }) {
               onClick={e => e.stopPropagation()}
               className="inline-flex items-center gap-1.5 text-[12px] no-underline text-green hover:opacity-70 transition-opacity duration-200"
             >
-              Live <IconArrow />
+              Live <LuArrowUpRight className="text-[14px]" />
             </a>
           ) : <span />}
           {repository ? (
@@ -67,7 +69,7 @@ function ProjectCard({ name, description, tech, repository, website }) {
               onMouseEnter={e => { e.currentTarget.style.color = '#ff6b00' }}
               onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,107,0,0.45)' }}
             >
-              Code <i className="bi bi-github text-[13px]" />
+              Code <LuGithub className="text-[13px]" />
             </a>
           ) : <span />}
         </div>
@@ -106,7 +108,7 @@ export function Projects() {
   const listRef    = useRef()
   const headingRef = useRef()
 
-  const { data: projects, loading } = usePB('projects')
+  const { projects, loadingProjects: loading } = usePortfolio()
 
   useEffect(() => {
     if (loading || !listRef.current?.children.length) return
@@ -184,11 +186,11 @@ export function Projects() {
         style={{ position: 'absolute', bottom: '25%', right: '8%', pointerEvents: 'none' }}
       />
       <div className="max-w-6xl mx-auto px-5 md:px-22">
-        <h3 className="text-2xl text-white font-semibold tracking-tight mb-6">
+        <h3 className="text-2xl text-zinc-300 font-semibold tracking-tight mb-6">
           <span className="text-green">03_</span> Projects
         </h3>
 
-        <p className="text-zinc-500 text-sm leading-relaxed max-w-105 mb-8 md:mb-16">
+        <p className="text-[#898992] text-sm leading-relaxed max-w-105 mb-8 md:mb-16">
           Storefronts, product UIs, and a few experiments. The work I'm proud enough to show.
         </p>
 

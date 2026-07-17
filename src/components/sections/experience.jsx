@@ -1,14 +1,16 @@
 import { useRef, useEffect } from 'preact/hooks'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
-import { usePB, parseTech } from '../../hooks/usePB'
+import { parseTech } from '../../hooks/usePB'
+import { usePortfolio } from '../../utils/PortfolioContext'
 import { DecoCube } from '../ui/DecoCube'
+import { LuArrowUpRight } from 'react-icons/lu'
+import { DynIcon } from '../ui/DynIcon'
 
 gsap.registerPlugin(ScrollTrigger)
 
 function JobEntry({ icon, name, link, description, tech, from, to, isLast, isPresent }) {
   const ref     = useRef()
-  const lineRef = useRef()
   const dateRef = useRef()
 
   useEffect(() => {
@@ -35,19 +37,6 @@ function JobEntry({ icon, name, link, description, tech, from, to, isLast, isPre
           scrub: 1,
         },
       })
-      if (lineRef.current) {
-        gsap.from(lineRef.current, {
-          scaleY: 0,
-          transformOrigin: 'top center',
-          ease: 'none',
-          scrollTrigger: {
-            trigger: ref.current,
-            start: 'top 80%',
-            end: 'bottom 60%',
-            scrub: 1,
-          },
-        })
-      }
     })
     return () => ctx.revert()
   }, [])
@@ -60,36 +49,38 @@ function JobEntry({ icon, name, link, description, tech, from, to, isLast, isPre
           {isPresent && <span className="absolute inset-0 rounded-full bg-green/30 animate-pulse-ring" />}
           <span className={`absolute inset-[2px] rounded-full bg-green ${isPresent ? 'shadow-[0_0_10px_rgba(255,107,0,1)]' : 'shadow-[0_0_4px_rgba(255,107,0,0.4)] opacity-40'}`} />
         </div>
-        {!isLast && <div ref={lineRef} className="w-px flex-1 mt-2 bg-gradient-to-b from-zinc-700/60 to-transparent" />}
+        <div className="timeline-line w-px flex-1 mt-2 bg-gradient-to-b from-zinc-700/60 to-transparent" />
       </div>
 
       {/* Content */}
       <div className={`flex flex-col md:flex-row flex-nowrap flex-1 min-w-0 gap-4 md:gap-16 items-start ${isLast ? 'pb-0' : 'pb-12'}`}>
         {/* Date */}
-        <span ref={dateRef} className="text-xs leading-5 tracking-widest mb-2 block text-zinc-500 min-w-50">
+        <span ref={dateRef} className="text-xs leading-5 tracking-widest mb-2 block text-[#898992] min-w-50">
           {from} — {to}
         </span>
 
         <div className="flex flex-col">
           {/* Company + role */}
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-4">
-            {icon && <i className={`bi ${icon} text-green text-sm`} />}
+            {icon && <DynIcon name={icon} className="text-green text-sm" />}
             {link ? (
-              <a
-                href={link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-1.5 text-white font-semibold text-lg no-underline hover:text-green transition-colors duration-200 leading-5"
-              >
-                {name}
-                <i className="bi bi-arrow-up-right text-xs opacity-50 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
+              <h3 className="text-zinc-300 font-semibold text-lg leading-5 m-0">
+                <a
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-1.5 text-zinc-300 no-underline hover:text-green transition-colors duration-200"
+                >
+                  {name}
+                  <LuArrowUpRight className="text-[15px] mb-0.5 opacity-50 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </a>
+              </h3>
             ) : (
-              <h3 className="text-white font-semibold text-lg leading-5">{name}</h3>
+              <h3 className="text-zinc-300 font-semibold text-lg leading-5">{name}</h3>
             )}
           </div>
 
-          <ul className="text-sm leading-5 text-zinc-500 mb-5 max-w-140 space-y-2 list-none p-0">
+          <ul className="text-sm leading-5 text-[#898992] mb-5 max-w-140 space-y-2 list-none p-0">
             {description.split('\n').filter(Boolean).map((line, i) => (
               <li key={i} className="flex gap-3 items-start">
                 <span className="shrink-0 mt-[5px] inline-block w-1.5 h-1.5 rounded-full bg-green shadow-[0_0_5px_rgba(255,107,0,0.9)]" />
@@ -138,7 +129,27 @@ function SkeletonEntry({ isLast }) {
 }
 
 export function Experience() {
-  const { data: jobs, loading } = usePB('experience', { sort: '-created' })
+  const { experience: jobs, loadingExperience: loading } = usePortfolio()
+  const listRef = useRef()
+
+  useEffect(() => {
+    if (loading || !jobs.length) return
+    const ctx = gsap.context(() => {
+      const lines = listRef.current.querySelectorAll('.timeline-line')
+      if (!lines.length) return
+      gsap.set(lines, { scaleY: 0, transformOrigin: 'top center' })
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: listRef.current,
+          start: 'top 70%',
+          end: 'bottom 60%',
+          scrub: 1,
+        },
+      })
+      tl.to(lines, { scaleY: 1, ease: 'none', duration: 1, stagger: 1 })
+    }, listRef)
+    return () => ctx.revert()
+  }, [jobs, loading])
 
   return (
     <section id="experience" className="flex flex-col justify-center min-h-svh relative py-20 md:py-40">
@@ -183,15 +194,15 @@ export function Experience() {
         style={{ position: 'absolute', bottom: '5%', left: '8%', pointerEvents: 'none' }}
       />
       <div className="w-full max-w-6xl mx-auto px-5 md:px-22">
-        <h2 className="text-2xl text-white font-semibold tracking-tight mb-6">
+        <h2 className="text-2xl text-zinc-300 font-semibold tracking-tight mb-6">
           <span className="text-green">02_</span> Experience
         </h2>
 
-        <p className="text-zinc-500 text-sm leading-relaxed max-w-110 mb-8 md:mb-16">
+        <p className="text-[#898992] text-sm leading-relaxed max-w-110 mb-8 md:mb-16">
           The places I've worked, the teams I've shipped with, and the problems I've helped solve along the way.
         </p>
 
-        <div>
+        <div ref={listRef}>
           {loading
             ? [1, 2, 3].map((i, idx, arr) => (
                 <SkeletonEntry key={i} isLast={idx === arr.length - 1} />

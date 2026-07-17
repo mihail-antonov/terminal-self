@@ -1,5 +1,7 @@
+import { PortfolioProvider } from './utils/PortfolioContext'
 import { SmoothScroll }     from './components/ui/SmoothScroll'
 import { SocialSidebar }   from './components/ui/SocialSidebar'
+import { SideNav }         from './components/ui/SideNav'
 import { SkillsMarquee }   from './components/ui/SkillsMarquee'
 import { Hero }            from './components/sections/hero'
 import { About }           from './components/sections/about'
@@ -9,17 +11,18 @@ import { Contact }        from './components/sections/contact'
 
 export function App() {
   return (
-    <>
+    <PortfolioProvider>
       <SmoothScroll />
+      <SideNav />
       <SocialSidebar />
       <main>
         <Hero />
         <About />
         {/* <SkillsMarquee /> */}
-<Experience />
+        <Experience />
         <Projects />
         <Contact />
       </main>
-    </>
+    </PortfolioProvider>
   )
 }

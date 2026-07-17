@@ -52,7 +52,7 @@ export function TerminalCard() {
         {dots.map(c => (
           <span key={c} className="w-3 h-3 rounded-full shrink-0" style={{ background: c }} />
         ))}
-        <span className="text-[11px] text-zinc-500 mx-auto tracking-wide">~/mihail-antonov — bash</span>
+        <span className="text-[11px] text-[#898992] mx-auto tracking-wide">~/mihail-antonov — bash</span>
       </div>
 
       {/* Body */}
@@ -65,7 +65,7 @@ export function TerminalCard() {
         <div className="mb-6 flex flex-col gap-[3px]">
           {info.map(({ label, value, highlight }) => (
             <div key={label} className="t flex items-center">
-              <span className="text-zinc-500 shrink-0" style={{ minWidth: '84px', marginRight: '12px' }}>{label}</span>
+              <span className="text-[#898992] shrink-0" style={{ minWidth: '84px', marginRight: '12px' }}>{label}</span>
               <span className={highlight ? 'text-green font-medium' : 'text-fg'}>
                 {highlight ? `[${value}]` : value}
                 {highlight && (
@@ -87,7 +87,7 @@ export function TerminalCard() {
           {skills.map(({ name, pct }) => (
             <div key={name} className="t">
               <div className="flex justify-between mb-2">
-                <span className="text-zinc-500 text-[12px]">{name}</span>
+                <span className="text-[#898992] text-[12px]">{name}</span>
                 <span className="text-green text-[12px]">{pct}%</span>
               </div>
               <div

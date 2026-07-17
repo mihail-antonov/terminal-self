@@ -58,7 +58,7 @@ export function FloatingNav() {
           return (
             <>
               {i > 0 && (
-                <span key={`sep-${i}`} className="text-white/10 text-[10px] select-none px-0.5">·</span>
+                <span key={`sep-${i}`} className="text-zinc-300/10 text-[10px] select-none px-0.5">·</span>
               )}
               <a
                 key={href}
@@ -67,7 +67,7 @@ export function FloatingNav() {
                   'text-[11px] tracking-widest uppercase no-underline px-3 py-1.5 rounded-full transition-all duration-200',
                   isActive
                     ? 'text-green bg-green/10'
-                    : 'text-zinc-500 hover:text-white',
+                    : 'text-[#898992] hover:text-zinc-300',
                 ].join(' ')}
               >
                 {label}

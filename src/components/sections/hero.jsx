@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'preact/hooks'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
+import { LuArrowDown, LuMouse } from 'react-icons/lu'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -106,8 +107,7 @@ export function Hero() {
   const cubeIntroRef  = useRef()
   const cubeRotateRef = useRef()
   const cubeFloatRef  = useRef()
-  const cubeDragRef   = useRef()
-
+  const cubeDragRef        = useRef()
   // Scroll parallax + float
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -267,7 +267,7 @@ export function Hero() {
               </span>
             </div>
 
-            <h1 className="font-semibold tracking-[-0.03em] mb-6 text-white overflow-hidden text-4xl md:text-5xl">
+            <h1 className="font-semibold tracking-[-0.03em] mb-6 text-zinc-300 overflow-hidden text-4xl md:text-5xl">
               <span ref={line1Ref} className="block whitespace-nowrap">
                 <span ref={name1Ref}>Mihail</span>
                 {' '}
@@ -278,7 +278,7 @@ export function Hero() {
 
             <p
               ref={subRef}
-              className="text-base leading-relaxed text-zinc-500 max-w-[400px] mb-10 opacity-0"
+              className="text-base leading-relaxed text-[#898992] max-w-[400px] mb-10 opacity-0"
             >
               This is my slice of the internet. I build fast, precise web
               interfaces — 6 years deep, from first pixel to production.
@@ -289,16 +289,17 @@ export function Hero() {
                 href="#projects"
                 className="inline-flex items-center justify-between gap-2 text-[12px] tracking-widest uppercase no-underline min-w-60 ps-6 pe-5 py-4 border border-green/30 bg-green/4 text-green font-semibold transition-all duration-200 hover:bg-green/8"
               >
-                <span>View my work</span> <i className="bi bi-arrow-right text-[14px]" />
+                <span>View my work</span> <LuArrowDown className="text-[14px]" />
               </a>
             </div>
           </div>
 
           {/* Right — octahedron */}
-          <div ref={cubeRef} className="flex justify-center opacity-0">
+          <div className="flex justify-center scale-75 md:scale-100">
+          <div ref={cubeRef} className="opacity-0">
             <div className="relative">
-              <div aria-hidden="true" className="bg-grid-pattern-subtle absolute inset-[-180px] pointer-events-none -z-1 opacity-75" />
-              <div aria-hidden="true" className="bg-glow-orange absolute inset-[-180px] pointer-events-none -z-1 opacity-40" />
+              <div aria-hidden="true" className="bg-grid-pattern-subtle absolute inset-[-110px] md:inset-[-180px] pointer-events-none -z-1 opacity-100" />
+              <div aria-hidden="true" className="bg-glow-orange absolute inset-[-110px] md:inset-[-180px] pointer-events-none -z-1 opacity-50" />
               <div ref={cubeFloatRef}>
                 <Octahedron
                   introRef={cubeIntroRef}
@@ -308,22 +309,10 @@ export function Hero() {
               </div>
             </div>
           </div>
+          </div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-1"
-        style={{ animation: 'mouse-bounce 1.8s ease-in-out infinite' }}
-        aria-hidden="true"
-      >
-        <span
-          className="text-[10px] uppercase text-zinc-500/60 select-none [writing-mode:vertical-rl] tracking-[0.25em]"
-        >
-          scroll
-        </span>
-        <i className="bi bi-mouse text-[24px] text-[rgba(255,107,0,0.4)]" />
-      </div>
     </section>
   )
 }
