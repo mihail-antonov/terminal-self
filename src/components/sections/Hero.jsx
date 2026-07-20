@@ -106,17 +106,17 @@ export function Hero() {
           {/* Left */}
           <div>
             <div className="flex items-center gap-3 mb-8">
-              <span className="inline-flex items-center gap-2 text-xs tracking-widest text-green">
+              <span className="inline-flex items-center gap-2 text-xs tracking-widest text-orange-500">
                 {'< FRONTEND DEVELOPER />'}
               </span>
             </div>
 
-            <h1 className="font-semibold tracking-[-0.03em] mb-6 text-zinc-300 text-4xl md:text-5xl">
+            <h1 className="font-semibold tracking-[-0.03em] mb-6 text-zinc-200 text-4xl md:text-5xl">
               <span ref={line1Ref} className="block whitespace-nowrap">
                 <span ref={name1Ref}>Mihail</span>
                 {' '}
                 <span ref={name2Ref}>Antonov</span>
-                <span className="text-green animate-blink">_</span>
+                <span className="text-orange-500 animate-blink">_</span>
               </span>
             </h1>
 
@@ -132,7 +132,7 @@ export function Hero() {
             <div ref={ctaRef} className="flex flex-wrap gap-4 items-center opacity-0">
               <a
                 href="#projects"
-                className="inline-flex items-center justify-between gap-2 text-[12px] tracking-widest uppercase rounded-sm no-underline min-w-60 ps-6 pe-5 py-4 border border-green/30 bg-green/4 text-green font-semibold transition-all duration-200 hover:bg-green/8"
+                className="inline-flex items-center justify-between gap-2 text-[12px] tracking-widest uppercase rounded-sm no-underline min-w-60 ps-6 pe-5 py-4 border border-orange-500/30 bg-orange-500/4 text-orange-500 font-semibold transition-all duration-200 hover:bg-orange-500/8"
               >
                 <span>View my work</span> <LuArrowDown className="text-[14px]"/>
               </a>

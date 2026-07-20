@@ -71,8 +71,8 @@ export function Experience() {
         className="absolute bottom-[5%] left-[8%] pointer-events-none"
       />
       <div className="w-full max-w-6xl mx-auto px-5 md:px-22">
-        <h2 className="text-2xl text-zinc-300 font-semibold tracking-tight mb-6">
-          <span className="text-green">02_</span> Experience
+        <h2 className="text-2xl text-zinc-200 font-semibold tracking-tight mb-6">
+          <span className="text-orange-500">02_</span> Experience
         </h2>
 
         <p className="text-[#898992] text-sm leading-relaxed mb-8 md:mb-16">

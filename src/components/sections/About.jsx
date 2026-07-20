@@ -10,7 +10,7 @@ import pb from '../../utils/pb'
 function TerminalLine({line}) {
   if (line.prompt) return (
     <div className="term-line term-prompt flex flex-wrap items-center gap-2 mb-1">
-      <span className="text-[#898992] select-none"><span className="text-green">mihail</span>@portfolio:~$</span>
+      <span className="text-[#898992] select-none"><span className="text-orange-500">mihail</span>@portfolio:~$</span>
       <span className="text-zinc-200 whitespace-break-spaces" data-type-text={line.text} />
     </div>
   )
@@ -23,7 +23,7 @@ function TerminalLine({line}) {
   if (line.key) return (
     <div className="term-line wrap-break-word pl-[15ch] indent-[-15ch]">
       <span className="text-[#898992] whitespace-pre">{'    '}{line.key}:{' '.repeat(Math.max(1, 10 - line.key.length))}</span>
-      <span className="text-fg" data-type-text={line.val} />
+      <span className="text-zinc-200" data-type-text={line.val} />
     </div>
   )
   if (!line.text) return (
@@ -180,8 +180,8 @@ export function About() {
                     <span key={i} className="w-3 h-3 rounded-full shrink-0" style={{background: c}}/>
                   ))}
                   <span className="text-[12px] ml-3 text-[#898992]">
-                    <span className="text-green">mihail</span>@portfolio: ~/
-                    <span className="text-zinc-300">01-about</span>
+                    <span className="text-orange-500">mihail</span>@portfolio: ~/
+                    <span className="text-zinc-200">01-about</span>
                   </span>
                 </div>
 
@@ -192,9 +192,9 @@ export function About() {
                   {/* Blinking cursor */}
                   <div className="term-line term-cursor flex items-center gap-2 mt-1">
                     <span className="text-[#898992] select-none">
-                      <span className="text-green">mihail</span>@portfolio:~$
+                      <span className="text-orange-500">mihail</span>@portfolio:~$
                     </span>
-                    <span className="inline-block w-2.25 h-3.5 align-middle bg-green animate-blink"/>
+                    <span className="inline-block w-2.25 h-3.5 align-middle bg-orange-500 animate-blink"/>
                   </div>
                 </div>
               </div>
@@ -203,8 +203,8 @@ export function About() {
 
           {/* Bio */}
           <div ref={bioRef} className="flex flex-col md:-mt-10">
-            <h2 className="text-2xl text-zinc-300 font-semibold tracking-tight mb-6">
-              <span className="text-green">01_</span> About
+            <h2 className="text-2xl text-zinc-200 font-semibold tracking-tight mb-6">
+              <span className="text-orange-500">01_</span> About
             </h2>
 
             <p className="text-sm leading-[2.1] mb-5 text-[#898992]">
@@ -212,11 +212,11 @@ export function About() {
             </p>
 
             <p className="text-sm leading-[2.1] mb-5 text-[#898992]">
-              I specialise in <span className="text-green">React</span>, <span className="text-green">Next.js</span>,
-              and <span className="text-green">Shopify</span> — from custom storefronts with Liquid and SCSS to full
-              product UIs with <span className="text-zinc-300 font-medium">Tailwind</span> and <span
-              className="text-zinc-300 font-medium">Node</span>. I also bring 3D configurators to life in the browser
-              with the <span className="text-zinc-300 font-medium">Threedium SDK</span>. I care about the gap between
+              I specialise in <span className="text-orange-500">React</span>, <span className="text-orange-500">Next.js</span>,
+              and <span className="text-orange-500">Shopify</span> — from custom storefronts with Liquid and SCSS to full
+              product UIs with <span className="text-zinc-200 font-medium">Tailwind</span> and <span
+              className="text-zinc-200 font-medium">Node</span>. I also bring 3D configurators to life in the browser
+              with the <span className="text-zinc-200 font-medium">Threedium SDK</span>. I care about the gap between
               a good interface and one people actually remember.
             </p>
 
@@ -228,7 +228,7 @@ export function About() {
               <a
                 href={pb.files.getURL(profile, profile.cv)}
                 download
-                className="self-start inline-flex items-center justify-between gap-2 text-[12px] tracking-widest uppercase rounded-sm no-underline min-w-60 ps-6 pe-5 py-4 border border-green/30 bg-green/4 text-green font-semibold transition-all duration-200 hover:bg-green/8"
+                className="self-start inline-flex items-center justify-between gap-2 text-[12px] tracking-widest uppercase rounded-sm no-underline min-w-60 ps-6 pe-5 py-4 border border-orange-500/30 bg-orange-500/4 text-orange-500 font-semibold transition-all duration-200 hover:bg-orange-500/8"
               >
                 <span>Download CV</span> <LuCloudDownload className="text-[16px]"/>
               </a>

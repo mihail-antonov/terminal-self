@@ -50,9 +50,9 @@ export function JobEntry({icon, name, link, description, tech, from, to, isLast,
       {/* Timeline dot + line */}
       <div className="flex flex-col items-center shrink-0">
         <div className="relative w-3 h-3 mt-[3px] shrink-0">
-          {isPresent && <span className="absolute inset-0 rounded-full bg-green/30 animate-pulse-ring"/>}
+          {isPresent && <span className="absolute inset-0 rounded-full bg-orange-500/30 animate-pulse-ring"/>}
           <span
-            className={`absolute inset-[2px] rounded-full bg-green ${isPresent ? 'shadow-[0_0_10px_rgba(255,107,0,1)]' : 'shadow-[0_0_4px_rgba(255,107,0,0.4)] opacity-40'}`}/>
+            className={`absolute inset-[2px] rounded-full bg-orange-500 ${isPresent ? 'shadow-[0_0_10px_rgba(255,107,0,1)]' : 'shadow-[0_0_4px_rgba(255,107,0,0.4)] opacity-40'}`}/>
         </div>
         <div className="timeline-line w-px flex-1 mt-2 bg-gradient-to-b from-zinc-700/60 to-transparent"/>
       </div>
@@ -66,8 +66,8 @@ export function JobEntry({icon, name, link, description, tech, from, to, isLast,
 
         <div className="flex flex-col grow">
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-4">
-            {icon && <DynIcon name={icon} className="text-green text-sm"/>}
-            <h3 className={`inline-flex items-center gap-1.5 font-semibold text-lg leading-5 text-zinc-300 ${link ? 'transition-colors duration-200 group-hover:text-green' : ''}`}>
+            {icon && <DynIcon name={icon} className="text-orange-500 text-sm"/>}
+            <h3 className={`inline-flex items-center gap-1.5 font-medium text-lg leading-5 text-zinc-200 ${link ? 'transition-colors duration-200 group-hover:text-orange-500' : ''}`}>
               {name}
               {link && <LuArrowUpRight className="text-[15px] mb-0.5 opacity-50 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"/>}
             </h3>
@@ -77,7 +77,7 @@ export function JobEntry({icon, name, link, description, tech, from, to, isLast,
             {description.split('\n').filter(Boolean).map((line, i) => (
               <li key={i} className="flex gap-3 items-start">
                 <span
-                  className="shrink-0 mt-[5px] inline-block w-1.5 h-1.5 rounded-full bg-green shadow-[0_0_5px_rgba(255,107,0,0.9)]"/>
+                  className="shrink-0 mt-[5px] inline-block w-1.5 h-1.5 rounded-full bg-orange-500 shadow-[0_0_5px_rgba(255,107,0,0.9)]"/>
                 <span className="block">{line.trim()}</span>
               </li>
             ))}
@@ -85,7 +85,7 @@ export function JobEntry({icon, name, link, description, tech, from, to, isLast,
 
           <div className="flex flex-wrap gap-2">
             {parseTech(tech).map(t => (
-              <span key={t} className="text-[11px] px-2 py-0.5 rounded bg-green/[7%] text-green border border-green/15">
+              <span key={t} className="text-[11px] px-2 py-0.5 rounded bg-orange-500/[7%] text-orange-500 border border-orange-500/15">
                 {t}
               </span>
             ))}

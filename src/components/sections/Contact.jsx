@@ -31,7 +31,7 @@ function HireCard({profile}) {
         <a
           href={`mailto:${email}`}
           onClick={e => e.stopPropagation()}
-          className="text-green no-underline border-b border-green/30 hover:border-green transition-[border-color] duration-150"
+          className="text-orange-500 no-underline border-b border-orange-500/30 hover:border-orange-500 transition-[border-color] duration-150"
         >
           {email}
         </a>
@@ -46,9 +46,9 @@ function Prompt({cmd}) {
   return (
     <div className="flex items-center gap-2 flex-wrap">
       <span className="text-[#898992] select-none whitespace-nowrap">
-        <span className="text-green">mihail</span>@portfolio:~$
+        <span className="text-orange-500">mihail</span>@portfolio:~$
       </span>
-      <span className="text-fg">{cmd}</span>
+      <span className="text-zinc-200">{cmd}</span>
     </div>
   )
 }
@@ -73,7 +73,7 @@ function ContactCard({links}) {
               target={external ? '_blank' : '_self'}
               rel={external ? 'noopener noreferrer' : undefined}
               onClick={e => e.stopPropagation()}
-              className="text-green no-underline border-b border-green/30 transition-[border-color] duration-150 hover:border-green"
+              className="text-orange-500 no-underline border-b border-orange-500/30 transition-[border-color] duration-150 hover:border-orange-500"
             >
               {linkLabel(href)}
             </a>
@@ -101,7 +101,7 @@ function TerminalEntry({entry, contactLinks, profile}) {
             target={external ? '_blank' : '_self'}
             rel={external ? 'noopener noreferrer' : undefined}
             onClick={e => e.stopPropagation()}
-            className="text-green no-underline border-b border-green/30 hover:border-green transition-[border-color] duration-150"
+            className="text-orange-500 no-underline border-b border-orange-500/30 hover:border-orange-500 transition-[border-color] duration-150"
           >
             {entry.label}
           </a>
@@ -159,8 +159,8 @@ export function Contact() {
              className="flex flex-col items-center justify-center py-20 md:py-40 overflow-hidden min-h-svh">
       <div className="max-w-3xl mx-auto px-5 w-full">
 
-        <h3 className="text-2xl text-zinc-300 font-semibold tracking-tight mb-6">
-          <span className="text-green">04_</span> Contact
+        <h3 className="text-2xl text-zinc-200 font-semibold tracking-tight mb-6">
+          <span className="text-orange-500">04_</span> Contact
         </h3>
 
         <p className="text-[#898992] text-sm leading-relaxed max-w-105 mb-8 md:mb-16">
@@ -182,9 +182,9 @@ export function Contact() {
             <div className="flex items-center gap-2 px-4 py-3 border-b border-zinc-800/75 bg-[#111113] select-none">
               <span className="w-3 h-3 rounded-full shrink-0 bg-[#3f3f46]"/>
               <span className="w-3 h-3 rounded-full shrink-0 bg-[#3f3f46]"/>
-              <span className="w-3 h-3 rounded-full shrink-0 bg-green"/>
+              <span className="w-3 h-3 rounded-full shrink-0 bg-orange-500"/>
               <span className="text-[12px] ml-3 text-[#898992]">
-                <span className="text-green">mihail</span>@portfolio: ~
+                <span className="text-orange-500">mihail</span>@portfolio: ~
               </span>
               <span className="text-[11px] text-[#898992]/40 ml-auto tracking-widest">v{pkg.version}</span>
             </div>
@@ -202,11 +202,11 @@ export function Contact() {
               {/* Active input */}
               <form onSubmit={handleSubmit} className="flex items-center gap-2 mt-auto flex-wrap">
                 <span className="text-[#898992] select-none whitespace-nowrap">
-                  <span className="text-green">mihail</span>@portfolio:~$
+                  <span className="text-orange-500">mihail</span>@portfolio:~$
                 </span>
                 <div className="relative flex-1 min-w-0 flex items-center">
-                  <span className="text-fg text-[13px] font-[inherit]">{input}</span>
-                  <span className="inline-block w-[9px] h-[14px] align-middle bg-green shrink-0 animate-blink"/>
+                  <span className="text-zinc-200 text-[13px] font-[inherit]">{input}</span>
+                  <span className="inline-block w-[9px] h-[14px] align-middle bg-orange-500 shrink-0 animate-blink"/>
                   <input
                     ref={inputRef}
                     type="text"

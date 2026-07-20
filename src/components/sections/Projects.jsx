@@ -73,8 +73,8 @@ export function Projects() {
         className="absolute bottom-[25%] right-[8%] pointer-events-none"
       />
       <div className="max-w-6xl mx-auto px-5 md:px-22">
-        <h3 className="text-2xl text-zinc-300 font-semibold tracking-tight mb-6">
-          <span className="text-green">03_</span> Projects
+        <h3 className="text-2xl text-zinc-200 font-semibold tracking-tight mb-6">
+          <span className="text-orange-500">03_</span> Projects
         </h3>
 
         <p className="text-[#898992] text-sm leading-relaxed mb-8 md:mb-16">

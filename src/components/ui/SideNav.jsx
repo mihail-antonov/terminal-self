@@ -68,7 +68,7 @@ export function SideNav() {
             key={href}
             href={href}
             aria-label={label}
-            className={`text-[12px] font-medium tracking-widest no-underline transition-colors duration-200 ${isActive ? 'text-green/70' : 'text-[#898992]/55 hover:text-[#898992]'}`}
+            className={`text-[12px] font-medium tracking-widest no-underline transition-colors duration-200 ${isActive ? 'text-orange-500' : 'text-[#898992]/55 hover:text-[#898992]'}`}
           >
             {num}
           </a>

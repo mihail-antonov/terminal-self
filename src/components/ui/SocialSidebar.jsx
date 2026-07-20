@@ -18,7 +18,7 @@ export function SocialSidebar() {
             target={external ? '_blank' : '_self'}
             rel={external ? 'noopener noreferrer' : undefined}
             aria-label={name}
-            className="text-[18px] no-underline transition-colors duration-200 text-[#898992]/35 hover:text-green/70"
+            className="text-[18px] no-underline transition-colors duration-200 text-[#898992]/35 hover:text-orange-500"
           >
             <DynIcon name={icon}/>
           </a>
