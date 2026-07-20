@@ -73,14 +73,12 @@ export function Hero() {
     const stopNoise = () => clearInterval(noiseId)
 
     const ctx = gsap.context(() => {
-      gsap.set(line1Ref.current, {y: '110%'})
       gsap.set([subRef.current, ctaRef.current], {opacity: 0, y: 12})
       gsap.set(cubeRef.current, {opacity: 0, scale: 0.85})
       gsap.set(cubeIntroRef.current, {rotateX: 0, rotateY: 0})
 
       const tl = gsap.timeline({delay: 0.2, defaults: {ease: 'power3.out'}})
-      tl.to(line1Ref.current, {y: '0%', duration: 0.9})
-        .add(() => scramble(name1Ref.current, 'Mihail', 800), '<')
+      tl.add(() => scramble(name1Ref.current, 'Mihail', 800))
         .add(() => {
           stopNoise();
           scramble(name2Ref.current, 'Antonov', 900)
@@ -113,7 +111,7 @@ export function Hero() {
               </span>
             </div>
 
-            <h1 className="font-semibold tracking-[-0.03em] mb-6 text-zinc-300 overflow-hidden text-4xl md:text-5xl">
+            <h1 className="font-semibold tracking-[-0.03em] mb-6 text-zinc-300 text-4xl md:text-5xl">
               <span ref={line1Ref} className="block whitespace-nowrap">
                 <span ref={name1Ref}>Mihail</span>
                 {' '}
