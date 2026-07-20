@@ -64,7 +64,7 @@ export function JobEntry({icon, name, link, description, tech, from, to, isLast,
           {from} — {to}
         </span>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col grow">
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-4">
             {icon && <DynIcon name={icon} className="text-green text-sm"/>}
             <h3 className={`inline-flex items-center gap-1.5 font-semibold text-lg leading-5 text-zinc-300 ${link ? 'transition-colors duration-200 group-hover:text-green' : ''}`}>

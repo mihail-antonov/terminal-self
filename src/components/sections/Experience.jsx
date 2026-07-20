@@ -75,8 +75,9 @@ export function Experience() {
           <span className="text-green">02_</span> Experience
         </h2>
 
-        <p className="text-[#898992] text-sm leading-relaxed max-w-110 mb-8 md:mb-16">
-          The places I've worked, the teams I've shipped with, and the problems I've helped solve along the way.
+        <p className="text-[#898992] text-sm leading-relaxed mb-8 md:mb-16">
+          The places the work happened.<br/>
+          The problems that made it interesting.
         </p>
 
         <div ref={listRef}>

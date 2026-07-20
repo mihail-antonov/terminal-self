@@ -3,6 +3,7 @@ import pb from '../utils/pb'
 
 function parseTech(raw) {
   if (!raw) return []
+  if (Array.isArray(raw)) return raw
   try {
     return JSON.parse(raw)
   } catch {

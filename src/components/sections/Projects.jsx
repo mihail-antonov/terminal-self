@@ -77,8 +77,9 @@ export function Projects() {
           <span className="text-green">03_</span> Projects
         </h3>
 
-        <p className="text-[#898992] text-sm leading-relaxed max-w-105 mb-8 md:mb-16">
-          Storefronts, product UIs, and a few experiments. The work I'm proud enough to show.
+        <p className="text-[#898992] text-sm leading-relaxed mb-8 md:mb-16">
+          Every project starts with a problem worth solving.<br/>
+          These are the ones that stuck.
         </p>
 
         <ul ref={listRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-4 lg:gap-12 p-0">

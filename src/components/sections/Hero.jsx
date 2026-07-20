@@ -126,8 +126,9 @@ export function Hero() {
               ref={subRef}
               className="text-base leading-relaxed text-[#898992] max-w-[400px] mb-10 opacity-0"
             >
-              This is my slice of the internet. I build fast, precise web
-              interfaces — 6 years deep, from first pixel to production.
+              I build interfaces that ship.<br/>
+              Fast, precise, production-ready.<br/>
+              First pixel to the last deploy.
             </p>
 
             <div ref={ctaRef} className="flex flex-wrap gap-4 items-center opacity-0">

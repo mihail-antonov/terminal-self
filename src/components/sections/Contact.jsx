@@ -6,7 +6,10 @@ import {toHref, isExternal, linkLabel} from '../../utils/links'
 import {DynIcon} from '../ui/DynIcon'
 import pkg from '../../../package.json'
 
-function HireCard() {
+function HireCard({profile}) {
+  const email = profile?.email ?? 'hello@mihail-antonov.dev'
+  const status = profile?.available ? 'READY TO TALK' : 'NOT AVAILABLE'
+
   return (
     <div>
       <div className="min-h-[1.9em]"/>
@@ -18,7 +21,7 @@ function HireCard() {
         '  [✓] Reasonable humans           REQUIRED',
         '  [?] Ping pong table             NICE TO HAVE',
         '',
-        '  Status: READY TO TALK',
+        `  Status: ${status}`,
         '',
       ].map((line, i) => (
         <div key={i} className="text-[#898992] min-h-[1.9em]">{line || ' '}</div>
@@ -26,11 +29,11 @@ function HireCard() {
       <div className="text-[#898992]">
         {'  Drop me a line: '}
         <a
-          href="mailto:hello@mihail-antonov.dev"
+          href={`mailto:${email}`}
           onClick={e => e.stopPropagation()}
           className="text-green no-underline border-b border-green/30 hover:border-green transition-[border-color] duration-150"
         >
-          hello@mihail-antonov.dev
+          {email}
         </a>
       </div>
       <div className="text-[#898992] min-h-[1.9em]">{'  Response time: < 24h (coffee permitting)'}</div>
@@ -81,10 +84,10 @@ function ContactCard({links}) {
   )
 }
 
-function TerminalEntry({entry, contactLinks}) {
+function TerminalEntry({entry, contactLinks, profile}) {
   if (entry.type === 'command') return <Prompt cmd={entry.text}/>
   if (entry.type === 'contact-card') return <ContactCard links={contactLinks}/>
-  if (entry.type === 'hire-card') return <HireCard/>
+  if (entry.type === 'hire-card') return <HireCard profile={profile}/>
 
   if (entry.type === 'link') {
     const external = isExternal(entry.href)
@@ -122,7 +125,7 @@ function TerminalEntry({entry, contactLinks}) {
 }
 
 export function Contact() {
-  const {contacts: contactLinks, experience, projects} = usePortfolio()
+  const {contacts: contactLinks, experience, projects, profile} = usePortfolio()
   const {history, input, setInput, handleSubmit, handleKeyDown} = useTerminal({
     contacts: contactLinks,
     projects,
@@ -161,7 +164,8 @@ export function Contact() {
         </h3>
 
         <p className="text-[#898992] text-sm leading-relaxed max-w-105 mb-8 md:mb-16">
-          Not available right now, but always up for a good conversation. Drop a line — I read everything.
+          Good work finds good people.<br/>
+          If you have something worth building, let’s talk.
         </p>
 
         <div className="relative">
@@ -192,7 +196,7 @@ export function Contact() {
               className="terminal-body flex flex-col p-5 md:p-6 text-[13px] leading-[1.9] overflow-y-auto h-85 bg-[#111113]"
             >
               {history.map((entry, i) => (
-                <TerminalEntry key={i} entry={entry} contactLinks={contactLinks}/>
+                <TerminalEntry key={i} entry={entry} contactLinks={contactLinks} profile={profile}/>
               ))}
 
               {/* Active input */}

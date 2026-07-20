@@ -3,7 +3,9 @@ import gsap from 'gsap'
 import {useScrollAnimation} from '../../hooks/useScrollAnimation'
 import {DecoCube} from '../ui/DecoCube'
 import {LuCloudDownload} from 'react-icons/lu'
-import {DOTS, TERMINAL_LINES} from '../../data/aboutData'
+import {usePortfolio} from '../../contexts/PortfolioContext'
+import {DOTS, buildTerminalLines} from '../../data/aboutData'
+import pb from '../../utils/pb'
 
 function TerminalLine({line}) {
   if (line.prompt) return (
@@ -15,7 +17,7 @@ function TerminalLine({line}) {
   if (line.highlight) return (
     <div className="term-line whitespace-pre">
       <span className="text-[#898992]">{'    status:   '}</span>
-      <span className="text-[#898992] font-semibold" data-type-text={' "NOT AVAILABLE",'} />
+      <span className="text-[#898992] font-semibold" data-type-text={` ${line.statusVal}`} />
     </div>
   )
   if (line.key) return (
@@ -35,6 +37,9 @@ function TerminalLine({line}) {
 }
 
 export function About() {
+  const {profile} = usePortfolio()
+  const terminalLines = buildTerminalLines(profile)
+
   const sectionRef = useRef()
   const bioRef = useRef()
   const terminalWrapRef = useRef()
@@ -91,7 +96,7 @@ export function About() {
       })
     })
     return () => ctx.revert()
-  }, [])
+  }, [profile])
 
   // Parallax on terminal
   useEffect(() => {
@@ -182,7 +187,7 @@ export function About() {
 
                 {/* Body */}
                 <div ref={terminalBodyRef} className="p-5 text-[12.5px] leading-[1.9] font-[inherit]">
-                  {TERMINAL_LINES.map((line, i) => <TerminalLine key={i} line={line}/>)}
+                  {terminalLines.map((line, i) => <TerminalLine key={i} line={line}/>)}
 
                   {/* Blinking cursor */}
                   <div className="term-line term-cursor flex items-center gap-2 mt-1">
@@ -202,31 +207,32 @@ export function About() {
               <span className="text-green">01_</span> About
             </h2>
 
-            <p className="text-[#898992] text-sm leading-relaxed mb-8">
-              6 years building interfaces people actually use.
+            <p className="text-sm leading-[2.1] mb-5 text-[#898992]">
+              Building interfaces people actually use — the kind where design and engineering overlap and neither makes excuses for the other.
             </p>
 
             <p className="text-sm leading-[2.1] mb-5 text-[#898992]">
               I specialise in <span className="text-green">React</span>, <span className="text-green">Next.js</span>,
               and <span className="text-green">Shopify</span> — from custom storefronts with Liquid and SCSS to full
-              product UIs with <span className="text-zinc-300 font-medium">TailwindCSS</span> and <span
-              className="text-zinc-300 font-medium">Node</span>. I care about the details: the kind of work where design
-              and engineering meet.
-            </p>
-            <p className="text-sm leading-[2.1] mb-10 text-[#898992]">
-              I also work with the <span className="text-zinc-300 font-medium">Threedium SDK</span> to bring 3D model
-              configurators to life in the browser. Currently <span
-              className="text-zinc-300 font-medium">not available</span> for new roles — but always up for a good
-              conversation.
+              product UIs with <span className="text-zinc-300 font-medium">Tailwind</span> and <span
+              className="text-zinc-300 font-medium">Node</span>. I also bring 3D configurators to life in the browser
+              with the <span className="text-zinc-300 font-medium">Threedium SDK</span>. I care about the gap between
+              a good interface and one people actually remember.
             </p>
 
-            <a
-              href="/resume.pdf"
-              download
-              className="self-start inline-flex items-center justify-between gap-2 text-[12px] tracking-widest uppercase rounded-sm no-underline min-w-60 ps-6 pe-5 py-4 border border-green/30 bg-green/4 text-green font-semibold transition-all duration-200 hover:bg-green/8"
-            >
-              <span>Download CV</span> <LuCloudDownload className="text-[16px]"/>
-            </a>
+            <p className="text-sm leading-[2.1] mb-10 text-[#898992]">
+              Outside of the desk, I'm usually on the tennis court, deep in a game, or going down a hardware rabbit hole I didn't need to start at 11pm.
+            </p>
+
+            {profile?.cv && (
+              <a
+                href={pb.files.getURL(profile, profile.cv)}
+                download
+                className="self-start inline-flex items-center justify-between gap-2 text-[12px] tracking-widest uppercase rounded-sm no-underline min-w-60 ps-6 pe-5 py-4 border border-green/30 bg-green/4 text-green font-semibold transition-all duration-200 hover:bg-green/8"
+              >
+                <span>Download CV</span> <LuCloudDownload className="text-[16px]"/>
+              </a>
+            )}
           </div>
         </div>
       </div>
