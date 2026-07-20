@@ -7,7 +7,7 @@ export function SocialSidebar() {
   const {contacts: links} = usePortfolio()
 
   return (
-    <aside className="hidden lg:flex fixed bottom-0 flex-col items-center gap-5 z-50 left-sidebar">
+    <aside className="hidden md:flex fixed bottom-0 flex-col items-center gap-5 z-50 left-sidebar">
       {links.map(({name, icon, website}) => {
         const href = toHref(website)
         const external = isExternal(href)

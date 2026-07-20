@@ -157,7 +157,7 @@ export function Contact() {
   return (
     <section id="contact" ref={sectionRef}
              className="flex flex-col items-center justify-center py-20 md:py-40 overflow-hidden min-h-svh">
-      <div className="max-w-3xl mx-auto px-5 w-full">
+      <div className="lg:max-w-3xl mx-auto px-5 md:px-22 w-full">
 
         <h3 className="text-2xl text-zinc-200 font-semibold tracking-tight mb-6">
           <span className="text-orange-500">04_</span> Contact

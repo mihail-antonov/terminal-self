@@ -60,7 +60,7 @@ export function SideNav() {
 
   return (
     <nav
-      className={`hidden lg:flex fixed top-32 flex-col gap-4 z-50 left-sidebar transition-all duration-500 ${visible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+      className={`hidden md:flex fixed top-32 flex-col gap-4 z-50 left-sidebar -translate-x-[4px] transition-all duration-500 ${visible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
       {sections.map(({num, label, href}) => {
         const isActive = active === href.slice(1)
         return (

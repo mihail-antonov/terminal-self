@@ -27,8 +27,8 @@ export function JobEntry({icon, name, link, description, tech, from, to, isLast,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: ref.current,
-          start: 'top 85%',
-          end: 'top 50%',
+          start: 'top 100%',
+          end: 'top 90%',
           scrub: 1,
         },
       })
@@ -52,9 +52,9 @@ export function JobEntry({icon, name, link, description, tech, from, to, isLast,
         <div className="relative w-3 h-3 mt-[3px] shrink-0">
           {isPresent && <span className="absolute inset-0 rounded-full bg-orange-500/30 animate-pulse-ring"/>}
           <span
-            className={`absolute inset-[2px] rounded-full bg-orange-500 ${isPresent ? 'shadow-[0_0_10px_rgba(255,107,0,1)]' : 'shadow-[0_0_4px_rgba(255,107,0,0.4)] opacity-40'}`}/>
+            className={`absolute inset-[2px] rounded-full ${isPresent ? 'bg-orange-500 shadow-[0_0_10px_rgba(255,107,0,1)]' : 'bg-[rgba(255,107,0,0.22)]'}`}/>
         </div>
-        <div className="timeline-line w-px flex-1 mt-2 bg-gradient-to-b from-zinc-700/60 to-transparent"/>
+        <div className="timeline-line w-px flex-1 -mt-0.5 -mb-1" style={{background: 'linear-gradient(to bottom, transparent, rgba(255,107,0,0.22) 60px, rgba(255,107,0,0.22) calc(100% - 60px), transparent)'}}/>
       </div>
 
       {/* Content */}
