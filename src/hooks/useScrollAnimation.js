@@ -1,10 +1,7 @@
-import { useEffect } from 'preact/hooks'
+import {useEffect} from 'preact/hooks'
 import gsap from 'gsap'
-import ScrollTrigger from 'gsap/ScrollTrigger'
 
-gsap.registerPlugin(ScrollTrigger)
-
-export function useScrollAnimation(ref, { y = 30, duration = 0.8, delay = 0, stagger = false } = {}) {
+export function useScrollAnimation(ref, {y = 30, duration = 0.8, delay = 0, stagger = false, scrub = false} = {}) {
   useEffect(() => {
     if (!ref.current) return
 
@@ -14,15 +11,11 @@ export function useScrollAnimation(ref, { y = 30, duration = 0.8, delay = 0, sta
       gsap.from(target, {
         opacity: 0,
         y,
-        duration,
-        delay,
         ease: 'power2.out',
-        stagger: stagger ? 0.12 : 0,
-        scrollTrigger: {
-          trigger: ref.current,
-          start: 'top 88%',
-          toggleActions: 'play none none none',
-        },
+        ...(scrub ? {} : {duration, delay, stagger: stagger ? 0.12 : 0}),
+        scrollTrigger: scrub
+          ? { trigger: ref.current, start: 'top 90%', end: 'top 40%', scrub: 1 }
+          : { trigger: ref.current, start: 'top 88%', toggleActions: 'play none none none' },
       })
     })
 

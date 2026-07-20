@@ -1,14 +1,16 @@
-import { usePortfolio } from '../../utils/PortfolioContext'
-import { DynIcon } from './DynIcon'
+import {usePortfolio} from '../../contexts/PortfolioContext'
+import {DynIcon} from './DynIcon'
+import {toHref, isExternal} from '../../utils/links'
 
 export function SocialSidebar() {
-  const { contacts: links } = usePortfolio()
+
+  const {contacts: links} = usePortfolio()
 
   return (
-    <aside className="hidden lg:flex fixed bottom-0 flex-col items-center gap-5 z-50" style={{ left: 'max(1.5rem, calc((100vw - 90rem) / 2))' }}>
-      {links.map(({ name, icon, website }) => {
-        const href = website.includes('@') && !website.startsWith('mailto:') ? `mailto:${website}` : website
-        const external = !href.startsWith('mailto:')
+    <aside className="hidden lg:flex fixed bottom-0 flex-col items-center gap-5 z-50 left-sidebar">
+      {links.map(({name, icon, website}) => {
+        const href = toHref(website)
+        const external = isExternal(href)
         return (
           <a
             key={name}
@@ -18,11 +20,11 @@ export function SocialSidebar() {
             aria-label={name}
             className="text-[18px] no-underline transition-colors duration-200 text-green/35 hover:text-green"
           >
-            <DynIcon name={icon} />
+            <DynIcon name={icon}/>
           </a>
         )
       })}
-      <div className="w-px h-16 mt-1 bg-[rgba(255,107,0,0.15)]" />
+      <div className="w-px h-16 mt-1 bg-[rgba(255,107,0,0.15)]"/>
     </aside>
   )
 }

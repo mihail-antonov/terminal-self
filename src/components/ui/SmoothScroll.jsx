@@ -1,9 +1,7 @@
-import { useEffect } from 'preact/hooks'
+import {useEffect} from 'preact/hooks'
 import Lenis from 'lenis'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
 
 export function SmoothScroll() {
   useEffect(() => {

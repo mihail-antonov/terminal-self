@@ -1,4 +1,4 @@
-import { LuGithub, LuLinkedin, LuMail } from 'react-icons/lu'
+import {LuGithub, LuLinkedin, LuMail} from 'react-icons/lu'
 
 const ICON_MAP = {
   LuGithub,
@@ -6,8 +6,8 @@ const ICON_MAP = {
   LuMail,
 }
 
-export function DynIcon({ name, className }) {
+export function DynIcon({name, className}) {
   const Component = ICON_MAP[name]
   if (!Component) return null
-  return <Component className={className} />
+  return <Component className={className}/>
 }

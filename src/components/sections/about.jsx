@@ -1,55 +1,92 @@
-import { useRef, useEffect } from 'preact/hooks'
+import {useRef, useEffect} from 'preact/hooks'
 import gsap from 'gsap'
-import ScrollTrigger from 'gsap/ScrollTrigger'
-import { useScrollAnimation } from '../../hooks/useScrollAnimation'
-import { DecoCube } from '../ui/DecoCube'
-import { LuCloudDownload } from 'react-icons/lu'
+import {useScrollAnimation} from '../../hooks/useScrollAnimation'
+import {DecoCube} from '../ui/DecoCube'
+import {LuCloudDownload} from 'react-icons/lu'
+import {DOTS, TERMINAL_LINES} from '../../data/aboutData'
 
-gsap.registerPlugin(ScrollTrigger)
-
-const DOTS = ['#3f3f46', '#3f3f46', '#ff6b00']
-
-const terminalLines = [
-  { prompt: true,  text: 'node mihail.js --verbose' },
-  { text: '' },
-  { text: '  Initializing...         ✓', dim: true },
-  { text: '  Loading skills...       ✓', dim: true },
-  { text: '  Brewing coffee...       ✓', dim: true },
-  { text: '  Checking ego...         LOW (good sign)', dim: true },
-  { text: '' },
-  { text: '  Output: {' },
-  { key: 'name',     val: '"Mihail Antonov"' },
-  { key: 'role',     val: '"Frontend Developer"' },
-  { key: 'exp',      val: '6,' },
-  { key: 'location', val: '"Remote"' },
-  { highlight: true },
-  { key: 'stack',    val: '["React", "Next.js", "Shopify"],' },
-  { text: '  }' },
-  { text: '' },
-]
+function TerminalLine({line}) {
+  if (line.prompt) return (
+    <div className="term-line term-prompt flex flex-wrap items-center gap-2 mb-1">
+      <span className="text-[#898992] select-none"><span className="text-green">mihail</span>@portfolio:~$</span>
+      <span className="text-zinc-200 whitespace-break-spaces" data-type-text={line.text} />
+    </div>
+  )
+  if (line.highlight) return (
+    <div className="term-line whitespace-pre">
+      <span className="text-[#898992]">{'    status:   '}</span>
+      <span className="text-[#898992] font-semibold" data-type-text={' "NOT AVAILABLE",'} />
+    </div>
+  )
+  if (line.key) return (
+    <div className="term-line wrap-break-word pl-[15ch] indent-[-15ch]">
+      <span className="text-[#898992] whitespace-pre">{'    '}{line.key}:{' '.repeat(Math.max(1, 10 - line.key.length))}</span>
+      <span className="text-fg" data-type-text={line.val} />
+    </div>
+  )
+  if (!line.text) return (
+    <div className="term-line whitespace-pre min-h-[1.9em] text-[#898992]"> </div>
+  )
+  return (
+    <div className={`term-line whitespace-pre min-h-[1.9em] ${line.dim ? 'text-[#898992]/55' : 'text-[#898992]'}`}>
+      <span data-type-text={line.text} />
+    </div>
+  )
+}
 
 export function About() {
-  const sectionRef      = useRef()
-  const bioRef          = useRef()
+  const sectionRef = useRef()
+  const bioRef = useRef()
   const terminalWrapRef = useRef()
   const terminalBodyRef = useRef()
 
-  useScrollAnimation(bioRef, { y: 0, duration: 0.6 })
+  useScrollAnimation(bioRef, {y: 0, duration: 0.6})
 
-  // Typewriter — reveal lines one by one when terminal enters view
+  // Type characters as user scrolls; structural parts (prompts, keys) stay visible
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const lines = terminalBodyRef.current.querySelectorAll('.term-line')
-      gsap.set(lines, { opacity: 0 })
-      gsap.to(lines, {
-        opacity: 1,
-        duration: 0.1,
-        stagger: 0.08,
+      const cursorEl = terminalBodyRef.current.querySelector('.term-cursor')
+      const lines = Array.from(terminalBodyRef.current.querySelectorAll('.term-line:not(.term-cursor)')).map(lineEl => {
+        const typeEl = lineEl.querySelector('[data-type-text]')
+        const isPrompt = lineEl.classList.contains('term-prompt')
+        return { lineEl, typeEl, text: typeEl?.dataset.typeText ?? '', isPrompt }
+      })
+
+      if (cursorEl) {
+        gsap.set(cursorEl, { opacity: 0 })
+        cursorEl.style.transition = 'opacity 0.3s ease'
+      }
+      lines.forEach(({ lineEl, typeEl, isPrompt }) => {
+        if (typeEl) typeEl.textContent = ''
+        if (isPrompt && typeEl) typeEl.style.opacity = '0'
+        if (!isPrompt && typeEl) gsap.set(lineEl, { opacity: 0 })
+      })
+
+      const totalUnits = lines.reduce((sum, l) => sum + (l.text.length || 1), 0)
+
+      gsap.to({}, {
         scrollTrigger: {
           trigger: terminalBodyRef.current,
-          start: 'top 75%',
-          end: 'center center+=5%',
+          start: 'top 90%',
+          end: 'center center+=10%',
           scrub: 1,
+          onUpdate(self) {
+            let remaining = Math.round(self.progress * totalUnits)
+            for (const { lineEl, typeEl, text, isPrompt } of lines) {
+              if (remaining <= 0) {
+                if (typeEl) typeEl.textContent = ''
+                if (isPrompt && typeEl) typeEl.style.opacity = '0'
+                if (!isPrompt && typeEl) lineEl.style.opacity = '0'
+              } else {
+                if (typeEl) typeEl.textContent = text.slice(0, Math.min(remaining, text.length))
+                if (isPrompt && typeEl) typeEl.style.opacity = Math.min(remaining / 5, 1)
+                if (!isPrompt && typeEl) lineEl.style.opacity = Math.min(remaining / 5, 1)
+              }
+              remaining -= text.length || 1
+            }
+            // Cursor appears only after all content has typed
+            if (cursorEl) cursorEl.style.opacity = remaining >= 0 ? '1' : '0'
+          },
         },
       })
     })
@@ -74,14 +111,15 @@ export function About() {
   }, [])
 
   return (
-    <section id="about" ref={sectionRef} className="flex flex-col items-center justify-center min-h-svh relative py-32 md:py-40 overflow-hidden">
+    <section id="about" ref={sectionRef}
+             className="flex flex-col items-center justify-center min-h-svh relative py-32 md:py-40 overflow-hidden">
       <DecoCube
         size={60}
         borderOpacity={0.12}
         trigger="#about"
         yTravel={100}
         initialRotate="rotateX(20deg) rotateY(50deg)"
-        style={{ position: 'absolute', top: '6%', right: '3%', pointerEvents: 'none' }}
+        className="absolute top-[6%] right-[3%] pointer-events-none"
       />
       <DecoCube
         size={36}
@@ -89,7 +127,7 @@ export function About() {
         trigger="#about"
         yTravel={70}
         initialRotate="rotateX(35deg) rotateY(15deg)"
-        style={{ position: 'absolute', bottom: '15%', right: '10%', pointerEvents: 'none' }}
+        className="absolute bottom-[15%] right-[10%] pointer-events-none"
       />
       <DecoCube
         size={28}
@@ -97,7 +135,7 @@ export function About() {
         trigger="#about"
         yTravel={55}
         initialRotate="rotateX(45deg) rotateY(65deg)"
-        style={{ position: 'absolute', top: '30%', left: '1%', pointerEvents: 'none' }}
+        className="absolute top-[30%] left-[1%] pointer-events-none"
       />
       <DecoCube
         size={48}
@@ -105,7 +143,7 @@ export function About() {
         trigger="#about"
         yTravel={85}
         initialRotate="rotateX(15deg) rotateY(40deg)"
-        style={{ position: 'absolute', bottom: '8%', left: '5%', pointerEvents: 'none' }}
+        className="absolute bottom-[8%] left-[5%] pointer-events-none"
       />
       <DecoCube
         size={22}
@@ -113,7 +151,7 @@ export function About() {
         trigger="#about"
         yTravel={45}
         initialRotate="rotateX(50deg) rotateY(25deg)"
-        style={{ position: 'absolute', top: '55%', right: '5%', pointerEvents: 'none' }}
+        className="absolute top-[55%] right-[5%] pointer-events-none"
       />
 
       <div className="w-full max-w-6xl mx-auto px-5 md:px-22">
@@ -121,77 +159,40 @@ export function About() {
         {/* Bio + Terminal */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 md:gap-20 lg:gap-32">
 
-
           {/* Terminal with parallax */}
           <div>
             <div className="relative">
-              <div aria-hidden="true" className="bg-grid-pattern-subtle absolute -bottom-[40px] md:-bottom-[80px] -top-[40px] md:-top-[140px] -left-[30px] md:-left-[150px] -right-[30px] md:-right-[50px] pointer-events-none z-0" />
-              <div aria-hidden="true" className="bg-glow-orange absolute -inset-24 pointer-events-none z-0" />
-            <div ref={terminalWrapRef} className="relative z-1 rounded-xl overflow-hidden bg-[#111113] border border-zinc-800/75 shadow-[0_0_60px_rgba(255,107,0,0.07)] will-change-transform">
-              {/* Title bar */}
-              <div
-                className="flex items-center gap-2 px-4 py-3 border-b border-zinc-800/75 select-none bg-[#111113]"
-              >
-                {DOTS.map((c, i) => (
-                  <span key={i} className="w-3 h-3 rounded-full shrink-0" style={{ background: c }} />
-                ))}
-                <span className="text-[12px] ml-3 text-[#898992]">
-                  <span className="text-green">mihail</span>@portfolio: ~/
-                  <span className="text-zinc-300">01-about</span>
-                </span>
-              </div>
-
-              {/* Body */}
-              <div ref={terminalBodyRef} className="p-5 text-[12.5px] leading-[1.9] font-[inherit]">
-                {terminalLines.map((line, i) => {
-                  if (line.prompt) {
-                    return (
-                      <div key={i} className="term-line flex flex-wrap items-center gap-2 mb-1">
-                        <span className="text-[#898992] select-none">
-                          <span className="text-green">mihail</span>@portfolio:~$
-                        </span>
-                        <span className="text-zinc-200 whitespace-break-spaces">{line.text}</span>
-                      </div>
-                    )
-                  }
-                  if (line.highlight) {
-                    return (
-                      <div key={i} className="term-line whitespace-pre">
-                        <span className="text-[#898992]">{'    status:   '}</span>
-                        <span className="text-[#898992] font-semibold"> "NOT AVAILABLE"</span>
-                        <span className="text-[#898992]">,</span>
-                      </div>
-                    )
-                  }
-                  if (line.key) {
-                    return (
-                      <div key={i} className="term-line wrap-break-word" style={{ paddingLeft: '15ch', textIndent: '-15ch' }}>
-                        <span className="text-[#898992] whitespace-pre">{'    '}{line.key}:{' '.repeat(Math.max(1, 10 - line.key.length))}</span><span className="text-fg">{line.val}</span>
-                      </div>
-                    )
-                  }
-                  return (
-                    <div
-                      key={i}
-                      className={`term-line whitespace-pre min-h-[1.9em] ${line.dim ? 'text-[#898992]/55' : 'text-[#898992]'}`}
-                    >
-                      {line.text || ' '}
-                    </div>
-                  )
-                })}
-
-                {/* Blinking cursor */}
-                <div className="term-line flex items-center gap-2 mt-1">
-                  <span className="text-[#898992] select-none">
-                    <span className="text-green">mihail</span>@portfolio:~$
+              <div aria-hidden="true"
+                   className="bg-grid-pattern-subtle absolute -bottom-10 md:-bottom-20 -top-10 md:-top-35 -left-7.5 md:-left-37.5 -right-7.5 md:-right-12.5 pointer-events-none z-0"/>
+              <div aria-hidden="true" className="bg-glow-orange absolute -inset-24 pointer-events-none z-0"/>
+              <div ref={terminalWrapRef}
+                   className="relative z-1 rounded-xl overflow-hidden bg-[#111113] border border-zinc-800/75 shadow-[0_0_60px_rgba(255,107,0,0.07)] will-change-transform">
+                {/* Title bar */}
+                <div
+                  className="flex items-center gap-2 px-4 py-3 border-b border-zinc-800/75 select-none bg-[#111113]"
+                >
+                  {DOTS.map((c, i) => (
+                    <span key={i} className="w-3 h-3 rounded-full shrink-0" style={{background: c}}/>
+                  ))}
+                  <span className="text-[12px] ml-3 text-[#898992]">
+                    <span className="text-green">mihail</span>@portfolio: ~/
+                    <span className="text-zinc-300">01-about</span>
                   </span>
-                  <span
-                    className="inline-block w-[9px] h-[14px] align-middle bg-green"
-                    style={{ animation: 'blink 1.1s steps(1) infinite' }}
-                  />
+                </div>
+
+                {/* Body */}
+                <div ref={terminalBodyRef} className="p-5 text-[12.5px] leading-[1.9] font-[inherit]">
+                  {TERMINAL_LINES.map((line, i) => <TerminalLine key={i} line={line}/>)}
+
+                  {/* Blinking cursor */}
+                  <div className="term-line term-cursor flex items-center gap-2 mt-1">
+                    <span className="text-[#898992] select-none">
+                      <span className="text-green">mihail</span>@portfolio:~$
+                    </span>
+                    <span className="inline-block w-2.25 h-3.5 align-middle bg-green animate-blink"/>
+                  </div>
                 </div>
               </div>
-            </div>
             </div>
           </div>
 
@@ -206,18 +207,25 @@ export function About() {
             </p>
 
             <p className="text-sm leading-[2.1] mb-5 text-[#898992]">
-              I specialise in <span className="text-green">React</span>, <span className="text-green">Next.js</span>, and <span className="text-green">Shopify</span> — from custom storefronts with Liquid and SCSS to full product UIs with <span className="text-zinc-300 font-medium">TailwindCSS</span> and <span className="text-zinc-300 font-medium">Node</span>. I care about the details: the kind of work where design and engineering meet.
+              I specialise in <span className="text-green">React</span>, <span className="text-green">Next.js</span>,
+              and <span className="text-green">Shopify</span> — from custom storefronts with Liquid and SCSS to full
+              product UIs with <span className="text-zinc-300 font-medium">TailwindCSS</span> and <span
+              className="text-zinc-300 font-medium">Node</span>. I care about the details: the kind of work where design
+              and engineering meet.
             </p>
             <p className="text-sm leading-[2.1] mb-10 text-[#898992]">
-              I also work with the <span className="text-zinc-300 font-medium">Threedium SDK</span> to bring 3D model configurators to life in the browser. Currently <span className="text-zinc-300 font-medium">not available</span> for new roles — but always up for a good conversation.
+              I also work with the <span className="text-zinc-300 font-medium">Threedium SDK</span> to bring 3D model
+              configurators to life in the browser. Currently <span
+              className="text-zinc-300 font-medium">not available</span> for new roles — but always up for a good
+              conversation.
             </p>
 
             <a
               href="/resume.pdf"
               download
-              className="self-start inline-flex items-center justify-between gap-2 text-[12px] tracking-widest uppercase no-underline min-w-60 ps-6 pe-5 py-4 border border-green/30 bg-green/4 text-green font-semibold transition-all duration-200 hover:bg-green/8"
+              className="self-start inline-flex items-center justify-between gap-2 text-[12px] tracking-widest uppercase rounded-sm no-underline min-w-60 ps-6 pe-5 py-4 border border-green/30 bg-green/4 text-green font-semibold transition-all duration-200 hover:bg-green/8"
             >
-              <span>Download CV</span> <LuCloudDownload className="text-[16px]" />
+              <span>Download CV</span> <LuCloudDownload className="text-[16px]"/>
             </a>
           </div>
         </div>

@@ -1,27 +1,25 @@
-import { PortfolioProvider } from './utils/PortfolioContext'
-import { SmoothScroll }     from './components/ui/SmoothScroll'
-import { SocialSidebar }   from './components/ui/SocialSidebar'
-import { SideNav }         from './components/ui/SideNav'
-import { SkillsMarquee }   from './components/ui/SkillsMarquee'
-import { Hero }            from './components/sections/hero'
-import { About }           from './components/sections/about'
-import { Experience }     from './components/sections/experience'
-import { Projects }       from './components/sections/projects'
-import { Contact }        from './components/sections/contact'
+import { PortfolioProvider } from './contexts/PortfolioContext'
+import {SmoothScroll} from './components/ui/SmoothScroll'
+import {SocialSidebar} from './components/ui/SocialSidebar'
+import {SideNav} from './components/ui/SideNav'
+import {Hero} from './components/sections/Hero'
+import {About} from './components/sections/About'
+import {Experience} from './components/sections/Experience'
+import {Projects} from './components/sections/Projects'
+import {Contact} from './components/sections/Contact'
 
 export function App() {
   return (
     <PortfolioProvider>
-      <SmoothScroll />
-      <SideNav />
-      <SocialSidebar />
+      <SmoothScroll/>
+      <SideNav/>
+      <SocialSidebar/>
       <main>
-        <Hero />
-        <About />
-        {/* <SkillsMarquee /> */}
-        <Experience />
-        <Projects />
-        <Contact />
+        <Hero/>
+        <About/>
+        <Experience/>
+        <Projects/>
+        <Contact/>
       </main>
     </PortfolioProvider>
   )
