@@ -1,4 +1,6 @@
 import {useState, useEffect} from 'preact/hooks'
+import gsap from 'gsap'
+import ScrollTrigger from 'gsap/ScrollTrigger'
 
 const sections = [
   {num: '01_', label: 'about', href: '#about'},
@@ -23,15 +25,37 @@ export function SideNav() {
   }, [])
 
   useEffect(() => {
-    const els = sections.map(s => document.getElementById(s.href.slice(1))).filter(Boolean)
-    const observer = new IntersectionObserver(
-      entries => entries.forEach(e => {
-        if (e.isIntersecting) setActive(e.target.id)
-      }),
-      {threshold: 0.3}
-    )
-    els.forEach(el => observer.observe(el))
-    return () => observer.disconnect()
+    const triggers = []
+    const pending = new Set(sections.map(s => s.href.slice(1)))
+
+    const setupSection = (id) => {
+      const el = document.getElementById(id)
+      if (!el) return
+      triggers.push(ScrollTrigger.create({
+        trigger: el,
+        start: 'top 60%',
+        end: 'bottom 40%',
+        onEnter: () => setActive(id),
+        onEnterBack: () => setActive(id),
+      }))
+      pending.delete(id)
+      if (pending.size === 0) observer.disconnect()
+    }
+
+    pending.forEach(id => setupSection(id))
+
+    const observer = new MutationObserver(() => {
+      pending.forEach(id => setupSection(id))
+    })
+
+    if (pending.size > 0) {
+      observer.observe(document.body, {childList: true, subtree: true})
+    }
+
+    return () => {
+      observer.disconnect()
+      triggers.forEach(t => t.kill())
+    }
   }, [])
 
   return (

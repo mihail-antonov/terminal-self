@@ -18,13 +18,13 @@ export function SocialSidebar() {
             target={external ? '_blank' : '_self'}
             rel={external ? 'noopener noreferrer' : undefined}
             aria-label={name}
-            className="text-[18px] no-underline transition-colors duration-200 text-green/35 hover:text-green"
+            className="text-[18px] no-underline transition-colors duration-200 text-[#898992]/35 hover:text-green/70"
           >
             <DynIcon name={icon}/>
           </a>
         )
       })}
-      <div className="w-px h-16 mt-1 bg-[rgba(255,107,0,0.15)]"/>
+      <div className="w-px h-16 mt-1 bg-zinc-800"/>
     </aside>
   )
 }
